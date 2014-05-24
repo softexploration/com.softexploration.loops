@@ -2,34 +2,60 @@ package com.softexploration.loops;
 
 public class RecursiveLoops {
 
-	public static void main(String[] args) {
-		h(false);
-	}
+    public static final long DEFAULT_RECURSIVE_INVOCATION_DELAY = 1;
 
-	public static void f() {
-		f();
-	}
+    /**
+     * Delay [ms] in recursive invocation
+     */
+    private long recursiveInvocationDelay = DEFAULT_RECURSIVE_INVOCATION_DELAY;
 
-	public static boolean g() {
-		if (g()) {
-			return true;
-		} else {
-			return g();
-		}
-	}
+    public void setRecursiveInvocationDelay(final long recursiveInvocationDelay) {
+	this.recursiveInvocationDelay = recursiveInvocationDelay;
+    }
 
-	public static boolean h(final boolean in) {
-		if (in) {
-			h(!in);
-		}
-		return false;
-	}
+    /**
+     * @return delay [ms] in recursive invocation
+     */
+    public long getRecursiveInvocationDelay() {
+	return recursiveInvocationDelay;
+    }
 
-	public static int fibonacci(int n) {
-		if (n < 2) {
-			return n;
-		} else {
-			return fibonacci(n - 1) + fibonacci(n - 2);
-		}
+    public void f() {
+	delay();
+	f();
+    }
+
+    public boolean g() {
+	delay();
+	if (g()) {
+	    return true;
+	} else {
+	    return g();
 	}
+    }
+
+    public boolean h(final boolean in) {
+	delay();
+	if (in) {
+	    h(!in);
+	}
+	return false;
+    }
+
+    public int fibonacci(int n) {
+	delay();
+	if (n < 2) {
+	    return n;
+	} else {
+	    return fibonacci(n - 1) + fibonacci(n - 2);
+	}
+    }
+
+    private void delay() {
+	try {
+	    Thread.sleep(recursiveInvocationDelay);
+	} catch (InterruptedException e) {
+	    // interrupted
+	}
+    }
 }
